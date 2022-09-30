@@ -5,17 +5,32 @@
 package model;
 
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
- * @author jonathandamasiomedeiros
+ * @author Héctor França
  */
+@Entity
+@Table(name = "atendimento")
 public class AtendimentoModel {
-    
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "nome", nullable = false)
     private String nome;
+    @Column(name = "data", nullable = false, length = 200)
     private Date data;
+    @Column(name = "atendimento", nullable = true)
     private Date atendimento;
+    @Column(name = "status", nullable = false)
     private int status; //0 = não atendido, 1 = senha em atendimento, 2 = já atendidos
 
     public AtendimentoModel(int id, String nome, Date data, Date atendimento, int status) {
@@ -26,10 +41,10 @@ public class AtendimentoModel {
         this.status = status;
     }
 
-    public AtendimentoModel(){
-        
+    public AtendimentoModel() {
+
     }
-    
+
     public int getId() {
         return id;
     }
@@ -74,5 +89,5 @@ public class AtendimentoModel {
     public String toString() {
         return id + " - " + nome;
     }
-    
+
 }

@@ -14,7 +14,7 @@ import model.AtendimentoModel;
 
 /**
  *
- * @author jonathandamasiomedeiros
+ * @author Héctor França
  */
 public class AtendimentoView extends javax.swing.JFrame {
 
@@ -58,6 +58,7 @@ public class AtendimentoView extends javax.swing.JFrame {
         jListChamadas = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Painel de Senhas");
         setMinimumSize(new java.awt.Dimension(696, 379));
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
@@ -65,7 +66,6 @@ public class AtendimentoView extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/jonathandamasiomedeiros/NetBeansProjects/Discord/src/main/resource/SIMBOLO-02.png")); // NOI18N
         jLabel1.setText("Painel de Senhas - Atendimento ao cliente Pacetech");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -315,6 +315,9 @@ public class AtendimentoView extends javax.swing.JFrame {
             if (atModel != null) {
                 jLabelSenha.setText(String.valueOf(atModel.getId()));
                 jLabelNome.setText(atModel.getNome());
+            } else {
+                jLabelSenha.setText("");
+                jLabelNome.setText("");
             }
         } catch (SQLException ex) {
             Logger.getLogger(AtendimentoView.class.getName()).log(Level.SEVERE, null, ex);
@@ -324,7 +327,6 @@ public class AtendimentoView extends javax.swing.JFrame {
     public void atualizaPainel(DefaultListModel listModel, List<AtendimentoModel> listAtendimentoModel) {
 
         //atualiza os models somente se ocorreu alguma alteração, para evitar do painel ficar "piscando" a cada segundo
-        
         if (listAtendimentoModel.isEmpty()) {
             listModel.clear();
         } else {
@@ -333,7 +335,7 @@ public class AtendimentoView extends javax.swing.JFrame {
                     listModel.addElement(at);
                 }
             } else {
-                
+
                 if ((listAtendimentoModel.get(0).getId() != ((AtendimentoModel) listModel.get(0)).getId()) || (listAtendimentoModel.size() != listModel.getSize())) {
                     listModel.clear();
                     for (AtendimentoModel at : listAtendimentoModel) {
@@ -366,7 +368,7 @@ public class AtendimentoView extends javax.swing.JFrame {
             List<AtendimentoModel> chamadosList = atController.getChamadosList();
 
             atualizaPainel(chamadosModel, chamadosList);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(AtendimentoView.class.getName()).log(Level.SEVERE, null, ex);
         }

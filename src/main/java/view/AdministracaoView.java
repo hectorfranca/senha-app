@@ -12,7 +12,7 @@ import model.AtendimentoModel;
 
 /**
  *
- * @author jonathandamasiomedeiros
+ * @author Héctor França
  */
 public class AdministracaoView extends javax.swing.JFrame {
 
@@ -45,6 +45,7 @@ public class AdministracaoView extends javax.swing.JFrame {
         jLabelSenhaChamada = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Painel de Administração");
         setMinimumSize(new java.awt.Dimension(727, 220));
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
@@ -52,7 +53,6 @@ public class AdministracaoView extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/jonathandamasiomedeiros/NetBeansProjects/Discord/src/main/resource/SIMBOLO-02.png")); // NOI18N
         jLabel1.setText("Painel de Administração");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -76,11 +76,6 @@ public class AdministracaoView extends javax.swing.JFrame {
         jLabel2.setText("Informar o nome e clicar em Cadastrar:");
 
         jTextFieldCadastro.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
-        jTextFieldCadastro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCadastroActionPerformed(evt);
-            }
-        });
 
         jButtonCadastro.setBackground(new java.awt.Color(0, 102, 204));
         jButtonCadastro.setFont(new java.awt.Font("Verdana", 1, 13)); // NOI18N
@@ -191,59 +186,54 @@ public class AdministracaoView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCadastroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldCadastroActionPerformed
-
     private void jButtonCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastroActionPerformed
         // TODO add your handling code here:
         String nome = jTextFieldCadastro.getText();
-        if (nome.equalsIgnoreCase("")){
+        if (nome.equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(this, "Informe um nome para cadastrar uma senha");
-            
-        }else{
+
+        } else {
             try {
                 AtendimentoController atController = new AtendimentoController();
-                
+
                 AtendimentoModel atendimento = new AtendimentoModel();
                 atendimento.setNome(nome);
                 atendimento.setData(new Date());
                 atendimento.setStatus(0);
                 int senha = atController.save(atendimento);
-                
+
                 //Atualiza o label com a senha que foi cadastrada no banco
                 jLabelSenhaCadastrada.setText("Cadastrado: " + senha + " - " + atendimento.getNome());
-                
+
                 //Limpa o campo nome para a digitação do próximo cliente
                 jTextFieldCadastro.setText("");
-                
-                
+
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar pessoa: " + ex.getMessage());
             }
-            
-            
+
         }
     }//GEN-LAST:event_jButtonCadastroActionPerformed
 
     private void jButtonProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProximoActionPerformed
-        
+
         try {
-            
+
             AtendimentoController atController = new AtendimentoController();
-            
+
             //Atualiza a(s) senha(s) que estavam em atendimento para senhas já chamadas
             atController.updateJaAtendido();
-            
+
             //Busca a próxima pessoa a ser atendida
             AtendimentoModel atendimento = atController.getFirst();
-            
-            if (atendimento != null){
+
+            if (atendimento != null) {
                 //Atualiza a pessoa como em atendimento
+                atendimento.setAtendimento(new Date());
                 atendimento.setStatus(1);
                 atController.update(atendimento);
                 jLabelSenhaChamada.setText("Última senha chamada: " + atendimento.getId() + " - " + atendimento.getNome());
-            }else{
+            } else {
                 jLabelSenhaChamada.setText("Sem clientes na fila. Vá tomar um café :D");
             }
         } catch (SQLException ex) {
